@@ -21,8 +21,8 @@ export default class TeamSelect extends React.Component {
       team1Selected: true,
       team1Name: "",
       team2Name: "",
-      team1Icon: "",
-      team2Icon: "",
+      team1Icon: "crimson",
+      team2Icon: "steelblue",
     };
     this.onChangeText = this.onChangeText.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -52,13 +52,13 @@ export default class TeamSelect extends React.Component {
       team2Icon,
     } = this.state;
 
-    if (team1Selected && (!team1Name.length || !team1Icon.length)) {
+    if (team1Selected && !team1Name.length) {
       alert("Input remaining fields for Team 1");
     } else if (team1Selected) {
       this.setState({ team1Selected: false });
     }
 
-    if (!team1Selected && (!team2Name.length || !team2Icon.length)) {
+    if (!team1Selected && !team2Name.length) {
       alert("Input remaining fields for Team 2");
     } else if (!team1Selected) {
       console.log("pass info to Stats, forward page to categoriesSelect");
@@ -66,7 +66,13 @@ export default class TeamSelect extends React.Component {
   }
 
   render() {
-    let message, placeholderText, currentTeam, currentIcon;
+    let message,
+      placeholderText,
+      currentTeam,
+      currentIcon,
+      finalIcon,
+      finalTeamName;
+
     let colors = [
       "crimson",
       "steelblue",
@@ -80,10 +86,14 @@ export default class TeamSelect extends React.Component {
       message = "Enter Team 1 Name: ";
       currentTeam = "team1Name";
       currentIcon = "team1Icon";
+      finalIcon = this.state.team1Icon;
+      finalTeamName = this.state.team1Name;
     } else {
       message = "Enter Team 2 Name: ";
       currentTeam = "team2Name";
       currentIcon = "team2Icon";
+      finalIcon = this.state.team2Icon;
+      finalTeamName = this.state.team2Name;
     }
 
     return (
@@ -105,6 +115,7 @@ export default class TeamSelect extends React.Component {
             {colors.map((color) => {
               return (
                 <TouchableOpacity
+                  style={styles.inactive}
                   onPress={() => {
                     this.iconSelection(currentIcon, color);
                   }}
@@ -117,6 +128,20 @@ export default class TeamSelect extends React.Component {
                 </TouchableOpacity>
               );
             })}
+          </View>
+        </View>
+
+        <View style={styles.reviewContainer}>
+          <Text style={styles.reviewText}>Your Team Info</Text>
+
+          {/* <View style={styles.reviewTextBox}>
+            <Text style={styles.reviewText}>Team Name: {finalTeamName}</Text>
+          </View> */}
+
+          <View style={styles.reviewIconBox}>
+            {/* <Text style={styles.reviewText}>Team Icon:</Text> */}
+            <MaterialCommunityIcons name="circle" size={50} color={finalIcon} />
+            <Text style={styles.reviewText}>{finalTeamName}</Text>
           </View>
         </View>
 
@@ -133,7 +158,7 @@ export default class TeamSelect extends React.Component {
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: "lightgreen",
+    // backgroundColor: "lightgreen",
     alignItems: "center",
     justifyContent: "center",
     // fontSize: 30,
@@ -152,7 +177,6 @@ const styles = {
   inputBox: {
     // borderColor: "gray",
     borderWidth: 1,
-    underline: 5,
     fontSize: 30,
     width: 300,
     padding: 10,
@@ -162,10 +186,27 @@ const styles = {
   // Color select Styles
   // ====================
   iconMenu: {
+    flex: 1,
     alignItems: "center",
-    backgroundColor: "darkred",
+    // backgroundColor: "darkred",
   },
   colorSelect: {
+    flexDirection: "row",
+  },
+  // ====================
+  // Review Styles
+  // ====================
+  reviewContainer: {
+    alignItems: "center",
+    width: "70%",
+  },
+  reviewText: {
+    fontSize: 30,
+    // what does team think of underline here
+    textDecorationLine: "underline",
+    lineHeight: 45,
+  },
+  reviewIconBox: {
     flexDirection: "row",
   },
   // ====================
